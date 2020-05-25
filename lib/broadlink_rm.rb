@@ -221,7 +221,9 @@ module BroadlinkRM
         aes.decrypt
         aes.iv = self.iv.pack("C*")
         aes.key = self.key.pack("C*")
-        aes.auth_data = ""
+        if RUBY_VERSION.to_f <= 2.2
+          aes.auth_data = ""
+        end
         payload = aes.update(response[0x38..-1])
         payload[0x04..-1].unpack("C*")
       end
